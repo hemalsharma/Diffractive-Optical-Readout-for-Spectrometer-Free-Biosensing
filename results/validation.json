@@ -105,7 +105,12 @@
       "closure": 0.9999999999999994
     },
     "broadband (c = 0)": {
-      "detector_over_expected": 0.9903926402016143
+      "detector_over_expected": 1.0000000000000004,
+      "removed_fraction_spectrum_weighted": 0.009607359798385007,
+      "removed_fraction_range": [
+        0.009607359798385007,
+        0.009607359798385007
+      ]
     }
   },
   "convergence": {

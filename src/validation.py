@@ -219,12 +219,22 @@ def test_energy():
         rows[name] = dict(doe_over_in=P_doe / P_in, prop_over_in=P_z / P_in,
                           bandlimited_over_in=P_bl / P_in, removed_fraction=lost,
                           closure=(P_bl / P_in + lost))
-    # Broadband: detector-plane integral equals sum_k S_k dlam x P_in
+    # Broadband: detector-plane integral equals sum_k S_k dlam P_in (1 - lost_k).
+    # The band-limit loss depends on wavelength in general, so it is weighted
+    # by the spectrum rather than taken from the single-wavelength case above.
     r = forward([0.0])
     g = r["grid"]
+    lam, S = r["lam_m"], r["S"][0]
+    lost = torch.cat([band_limited_fraction(r["E_doe"], g, lam[i:i + 16], CFG.z)
+                      for i in range(0, lam.numel(), 16)])
+    P_in = float(power(r["E_in"], g))
+    dl = CFG.dlam_nm(r["sensor"])
     P_det = float(r["I"][0].sum() * g.cell_area)
-    P_exp = float(r["S"][0].sum()) * CFG.dlam_nm(r["sensor"]) * float(power(r["E_in"], g))
-    rows["broadband (c = 0)"] = dict(detector_over_expected=P_det / P_exp)
+    P_exp = float((S * (1 - lost)).sum()) * dl * P_in
+    rows["broadband (c = 0)"] = dict(
+        detector_over_expected=P_det / P_exp,
+        removed_fraction_spectrum_weighted=float((S * lost).sum() / S.sum()),
+        removed_fraction_range=[float(lost.min()), float(lost.max())])
     RESULTS["energy"] = rows
 
 
@@ -242,7 +252,8 @@ def observables(r):
 def test_convergence():
     c = [0.0, 1.0]
     # (a) wavelength samples
-    Ns = [10, 20, 30, 50, 75, 100, 150, 200, 300, 600]
+    # Always include the configured N_lambda; the largest value is the reference.
+    Ns = sorted({10, 20, 30, 50, 75, 100, 150, 200, 300, 600, CFG.n_lambda})
     obs_l = {n: observables(forward(c, n_lambda=n)) for n in Ns}
     ref = obs_l[Ns[-1]]
     # (b) simulation grid: samples per DOE pixel, window padding
@@ -267,7 +278,7 @@ def test_convergence():
         e = [abs(obs_l[n][key] - ref[key]) / abs(ref[key]) for n in Ns[:-1]]
         ax.loglog(Ns[:-1], [max(v, 1e-16) for v in e], "o-", label=lab)
     ax.axvline(CFG.n_lambda, color="gray", ls=":", label=f"chosen Nλ = {CFG.n_lambda}")
-    ax.set(xlabel="wavelength samples Nλ", ylabel="relative error vs Nλ = 600",
+    ax.set(xlabel="wavelength samples Nλ", ylabel=f"relative error vs Nλ = {Ns[-1]}",
            title="Convergence with wavelength sampling")
     ax.legend(fontsize=8)
     fig.tight_layout()
@@ -286,14 +297,14 @@ def checks():
     th = R["orders"]["binary_theory"]
     cv = R["convergence"]
     wl = cv["wavelength"]
-    rel150 = abs(wl[CFG.n_lambda]["dR"] / wl[600]["dR"] - 1)
+    n_ref = max(wl)
+    rel_nl = abs(wl[CFG.n_lambda]["dR"] / wl[n_ref]["dR"] - 1)
     dRs = [v["dR"] for v in cv["grid"].values()]
     dxs = [v["dx_nm"] for v in cv["grid"].values()]
     pix = list(cv["detector_pixel_um_to_dx_nm"].values())
     en = R["energy"]
     closure = max(abs(v["closure"] - 1) for k, v in en.items() if "closure" in v)
-    bb = abs(en["broadband (c = 0)"]["detector_over_expected"]
-             - (1 - en["linear grating"]["removed_fraction"]))
+    bb = abs(en["broadband (c = 0)"]["detector_over_expected"] - 1)
     order_err = max(max(abs(o4["binary"][m] - th[m]) for m in (-1, 1, 3)),
                     abs(o4["staircase_plus1"] - R["orders"]["staircase_+1_theory"]))
     return [
@@ -309,8 +320,8 @@ def checks():
          f"max deviation from theory {order_err:.1e} (limit 1e-3)"),
         ("Energy conservation", closure < 1e-12 and bb < 1e-9,
          f"closure {closure:.1e}, broadband {bb:.1e} (limit 1e-12 / 1e-9)"),
-        ("Wavelength-sampling convergence", rel150 < 1e-3,
-         f"N_lambda = {CFG.n_lambda}: error {rel150:.1e} vs N_lambda = 600 (limit 1e-3)"),
+        ("Wavelength-sampling convergence", rel_nl < 1e-3,
+         f"N_lambda = {CFG.n_lambda}: error {rel_nl:.1e} vs N_lambda = {n_ref} (limit 1e-3)"),
         ("Spatial-sampling convergence",
          (max(dRs) - min(dRs)) / abs(dRs[-1]) < 1e-2 and (max(dxs) - min(dxs)) / abs(dxs[-1]) < 1e-6
          and (max(pix) - min(pix)) / abs(pix[0]) < 1e-9,

@@ -49,3 +49,23 @@ def test_forward_from_spectrum_rejects_bad_input(bad):
     phi = bad.pop("phi", torch.zeros(CFG.n_doe, CFG.n_doe, dtype=torch.float64))
     with pytest.raises(ValueError):
         forward_from_spectrum(bad["lam_m"], bad["S"], phi)
+
+
+def test_default_quadrature_is_trapezoid(table_run):
+    """Without dlam_nm, forward_from_spectrum halves the end-point weights."""
+    r = table_run
+    phi = linear_grating(CFG.n_doe, CFG.pitch, CFG.period)
+    lam = r["lam_m"][:20]
+    S = r["S"][:, :20]
+    dl = CFG.dlam_nm(r["sensor"])
+    w = torch.full((20,), dl, dtype=torch.float64)
+    w[0] = w[-1] = dl / 2
+    trap = forward_from_spectrum(lam, S, phi)
+    explicit = forward_from_spectrum(lam, S, phi, dlam_nm=w)
+    assert torch.allclose(trap["I"], explicit["I"], rtol=1e-9, atol=0)
+
+
+def test_readout_without_light_is_zero():
+    phi = torch.zeros(CFG.n_doe, CFG.n_doe, dtype=torch.float64)
+    r = forward_from_spectrum([1.55e-6, 1.56e-6], torch.zeros(2, dtype=torch.float64), phi)
+    assert float(r["R"]) == 0.0

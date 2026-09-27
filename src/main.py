@@ -85,7 +85,11 @@ def forward_from_spectrum(lam_m, S, phi_doe, cfg=CFG, dlam_nm=None,
         Phase delay in radians on the physical DOE pixel grid.
     dlam_nm : float or (Nl,) tensor-like, optional
         Wavelength-integration step or quadrature weights in nanometres.
-        If omitted, composite-trapezoid weights are derived from lam_m.
+        If omitted, composite-trapezoid weights are derived from lam_m
+        (the end points get half weight). forward() instead passes the
+        uniform step cfg.dlam_nm(sensor), i.e. the rectangle rule, which is
+        what the results in results/ use. The two differ only in the end-point
+        weights; pass dlam_nm explicitly to reproduce forward() exactly.
 
     Returns the detector-plane intensity ``I``, integrated detector powers
     ``IA`` and ``IB``, total grid power ``P_total``, and normalized readout
@@ -133,7 +137,12 @@ def forward_from_spectrum(lam_m, S, phi_doe, cfg=CFG, dlam_nm=None,
 
 
 def forward(c, cfg=CFG, phi_doe=None, n_lambda=None, upsample=None, pad=None):
-    """Full forward model. Returns a dict with every intermediate quantity."""
+    """Full forward model. Returns a dict with every intermediate quantity.
+
+    Integrates over wavelength with the rectangle rule on the sensor's
+    uniform grid (weight cfg.dlam_nm(sensor) at every sample); see
+    forward_from_spectrum for the trapezoid default used there.
+    """
     if phi_doe is None:
         phi_doe = linear_grating(cfg.n_doe, cfg.pitch, cfg.period)
 

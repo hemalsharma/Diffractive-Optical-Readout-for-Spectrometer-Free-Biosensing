@@ -98,8 +98,16 @@ def region_power(I, mask, grid):
 
 
 def differential_readout(IA, IB):
-    """R = (I_A - I_B) / (I_A + I_B); insensitive to common source power."""
-    return (IA - IB) / (IA + IB)
+    """R = (I_A - I_B) / (I_A + I_B); insensitive to common source power.
+
+    Where no light reaches either detector (I_A + I_B = 0), R is defined as 0
+    instead of NaN, with a zero (not NaN) gradient, so an optimizer can start
+    from a DOE that misses both detectors.
+    """
+    total = IA + IB
+    lit = total > 0
+    safe = torch.where(lit, total, torch.ones_like(total))
+    return torch.where(lit, (IA - IB) / safe, torch.zeros_like(total))
 
 
 def centroid(I, grid):
@@ -165,4 +173,9 @@ if __name__ == "__main__":
     B = region_power(Ih, rect_mask(g, h + 150e-6, 0, 300e-6, 600e-6), g)
     assert abs(float(differential_readout(A, B))) < 1e-9
     assert bin_pixels(I, 4).shape == (64, 64)
+    # No light on either detector: R = 0 with a finite gradient.
+    dark = torch.zeros(2, dtype=DTYPE, requires_grad=True)
+    Rd = differential_readout(dark[0], dark[1])
+    Rd.backward()
+    assert float(Rd.detach()) == 0.0 and bool(torch.isfinite(dark.grad).all())
     print("detector.py: all self-checks passed")

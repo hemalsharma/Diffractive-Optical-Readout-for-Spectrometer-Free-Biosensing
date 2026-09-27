@@ -36,7 +36,11 @@ For an externally supplied sampled spectrum and DOE phase, call
 `main.forward_from_spectrum(lam_m, S, phi_doe, dlam_nm=...)`. It returns the
 detector-plane image `I`, detector powers `IA` and `IB`, total grid power
 `P_total`, and normalized differential signal `R`. If `dlam_nm` is omitted,
-the function derives trapezoidal integration weights from `lam_m`.
+the function derives trapezoidal integration weights from `lam_m`. Note that
+`main.forward(c)` uses the rectangle rule instead (uniform step
+`cfg.dlam_nm(sensor)` at every sample, as in `results/`); the two differ only in
+the end-point weights, and passing `dlam_nm=cfg.dlam_nm(sensor)` reproduces
+`forward` exactly. If no light reaches either detector, `R` is returned as 0.
 
 The full description, results and validation are in **`Stage1_Report.pdf`**.
 

@@ -1,0 +1,7 @@
+# Core (needed for everything in src/)
+numpy>=1.24
+torch>=2.0
+matplotlib>=3.7
+
+# Only needed to open and run the notebook
+jupyter

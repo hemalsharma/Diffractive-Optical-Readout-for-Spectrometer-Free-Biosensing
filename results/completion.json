@@ -1,0 +1,63 @@
+{
+  "reproducibility": {
+    "repeated_runs_bitwise_identical": true,
+    "supplied_S_phi_max_rel_diff": 0.0,
+    "wavelength_chunking_max_rel_diff": 1.3578291921574931e-15,
+    "concentration_batching_max_rel_diff": 4.526097307191643e-16
+  },
+  "arbitrary_phase": {
+    "energy_deviation": {
+      "random phase": {
+        "doe": 0.0,
+        "propagation": -6.661338147750939e-16,
+        "closure": 0.0,
+        "fraction_leaving_window": 0.8884576859269073
+      },
+      "smoothed random phase": {
+        "doe": 0.0,
+        "propagation": -6.661338147750939e-16,
+        "closure": -6.661338147750939e-16,
+        "fraction_leaving_window": 0.006599265756007777
+      }
+    },
+    "angular_spectrum_vs_rayleigh_sommerfeld_rel_L2": {
+      "128 um window": 0.02938070351032435,
+      "512 um window": 0.0019593607092603504,
+      "2048 um window": 0.00011040737726313393
+    }
+  },
+  "arbitrary_spectrum": {
+    "superposition_max_rel_err": 4.147362193149602e-16,
+    "scaling_max_rel_err": 4.718613589676798e-16,
+    "R_change_when_source_power_x3p7": 3.8163916471489756e-17
+  },
+  "gradients": [
+    {
+      "pixel": [
+        128,
+        128
+      ],
+      "autograd": -9.885629255463647e-05,
+      "finite_difference": -9.885629467798472e-05,
+      "rel_diff": 2.1479140575451773e-08
+    },
+    {
+      "pixel": [
+        120,
+        150
+      ],
+      "autograd": -4.75023657370744e-05,
+      "finite_difference": -4.750236653680572e-05,
+      "rel_diff": 1.6835610075202196e-08
+    },
+    {
+      "pixel": [
+        140,
+        105
+      ],
+      "autograd": 2.712731420143693e-05,
+      "finite_difference": 2.7127322610454027e-05,
+      "rel_diff": 3.099833042294971e-07
+    }
+  ]
+}

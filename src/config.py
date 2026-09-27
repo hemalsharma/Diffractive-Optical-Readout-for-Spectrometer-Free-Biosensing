@@ -65,3 +65,50 @@ class Config:
 
 
 CFG = Config()
+
+
+@dataclass(frozen=True)
+class Embodiment2Config:
+    """Embodiment 2 (pixel-wise spectral coding) parameters.
+
+    The optics, sensor and wavelength grid are those of Config; this adds the
+    camera, the noise model and the estimator settings.
+
+    Noise level. One frame collects `photons_per_frame` photoelectrons in
+    total (all wavelengths, before the band-limit loss), which puts the
+    brightest 20 um pixel at ~4.5e4 e-, below a typical InGaAs full well.
+    `n_frames` frames are summed, so the measurement has
+    n_frames * photons_per_frame photoelectrons and a read-noise variance of
+    n_frames * read_noise_e**2 per pixel.
+    """
+    # Camera
+    camera_pitch: float = 20e-6       # camera pixel pitch [m]; multiple of the grid dx
+    roi_pixels: int = 48              # ROI side in camera pixels, centred on the +1 order
+
+    # Noise (Eq. 9)
+    photons_per_frame: float = 1e7    # photoelectrons per frame at zero shift
+    read_noise_e: float = 100.0       # read noise per pixel per frame [e- rms]
+    n_frames: int = 100               # frames summed per measurement
+
+    # Estimator
+    delta_gammas: float = 0.02        # central-difference step delta / gamma (Eq. 7)
+    Sn_nm_per_riu: float = 200.0      # assumed bulk sensitivity S_n [nm/RIU] (Eq. 1, 12)
+    gn_iterations: int = 10           # Gauss-Newton re-linearizations
+
+    # Monte Carlo (Section 5)
+    test_shifts_gammas: tuple = (-0.1, -0.05, 0.03, 0.07, 0.1)
+    mc_trials: int = 2000
+    seed: int = 2
+
+    @property
+    def photons(self):
+        """Total photoelectrons per measurement at zero shift."""
+        return self.photons_per_frame * self.n_frames
+
+    @property
+    def read_var(self):
+        """Read-noise variance per pixel per measurement [e-^2]."""
+        return self.n_frames * self.read_noise_e ** 2
+
+
+E2 = Embodiment2Config()

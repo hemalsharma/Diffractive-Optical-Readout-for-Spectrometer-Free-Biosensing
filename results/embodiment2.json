@@ -1,0 +1,337 @@
+{
+  "model": {
+    "n_lambda": 150,
+    "lambda_range_nm": [
+      1520.0,
+      1584.9999999999998
+    ],
+    "camera_pitch_um": 20.0,
+    "roi_pixels": [
+      48,
+      48
+    ],
+    "roi_x_um": [
+      7.500000000000001,
+      947.5000000000001
+    ],
+    "roi_y_um": [
+      -472.50000000000006,
+      467.50000000000006
+    ],
+    "photons": 1000000000.0,
+    "read_noise_e_per_frame": 100.0,
+    "n_frames": 100,
+    "peak_pixel_e": 4544838.582717951,
+    "peak_pixel_e_per_frame": 45448.38582717951,
+    "W_column_power_max_err": 1.1102230246251565e-16,
+    "band_limit_loss": [
+      0.009607359798384674,
+      0.009607359798384674
+    ],
+    "roi_fraction_of_camera_power_min": 0.9998918082296108,
+    "y_vs_stage1_broadband_max_rel": 4.0983747064500554e-16,
+    "delta_nm": 0.05,
+    "g_fd_vs_fd_half_delta": 1.1129025303137238e-05,
+    "g_fd_vs_analytic": 1.483867675988651e-05,
+    "g_analytic_vs_autograd": 1.0421694536175228e-12,
+    "build_seconds": 3.4931747913360596
+  },
+  "noise": {
+    "pixels": [
+      1169,
+      1121,
+      1170,
+      0,
+      2256,
+      47
+    ],
+    "mean_e": [
+      2310821.0227645775,
+      2302484.0115698706,
+      2775752.359953112,
+      0.3851279015491789,
+      0.4564442167052014,
+      0.6211907642794677
+    ],
+    "max_rel_err_mean": 2.3921593732768103,
+    "max_rel_err_var": 0.018577322999594362
+  },
+  "monte_carlo": {
+    "test_shifts_nm": [
+      -0.25,
+      -0.125,
+      0.075,
+      0.17500000000000002,
+      0.25
+    ],
+    "trials": 2000,
+    "seed": 2,
+    "rows": [
+      {
+        "M": 1,
+        "crb_nm": 0.9967232114365177,
+        "crb_local_nm": 5.57669469025219,
+        "rms_gls_predicted_nm": 1.0009713992664493,
+        "rms_gls_nm": 1.0064983086837973,
+        "rms_ols_nm": 1.0064983086837973,
+        "rms_gauss_newton_nm": 0.49398402868560587,
+        "max_abs_bias_gls_nm": 0.13077665756838208,
+        "crb_dn_riu": 0.004983616057182588,
+        "rms_gls_dn_riu": 0.005032491543418987
+      },
+      {
+        "M": 2,
+        "crb_nm": 0.7057593558016618,
+        "crb_local_nm": 3.9387153401515027,
+        "rms_gls_predicted_nm": 0.7117292273812401,
+        "rms_gls_nm": 0.7154320389561074,
+        "rms_ols_nm": 0.7154476789452747,
+        "rms_gauss_newton_nm": 0.4545550715478909,
+        "max_abs_bias_gls_nm": 0.14491786990676805,
+        "crb_dn_riu": 0.003528796779008309,
+        "rms_gls_dn_riu": 0.003577160194780537
+      },
+      {
+        "M": 4,
+        "crb_nm": 0.5017378610688127,
+        "crb_local_nm": 1.4270752100152766,
+        "rms_gls_predicted_nm": 0.5112481554014863,
+        "rms_gls_nm": 0.5095504414954903,
+        "rms_ols_nm": 0.5107624188418963,
+        "rms_gauss_newton_nm": 0.40300640059603254,
+        "max_abs_bias_gls_nm": 0.1581745670534183,
+        "crb_dn_riu": 0.0025086893053440635,
+        "rms_gls_dn_riu": 0.002547752207477452
+      },
+      {
+        "M": 8,
+        "crb_nm": 0.3582921995522142,
+        "crb_local_nm": 1.116457611465539,
+        "rms_gls_predicted_nm": 0.3708078185084552,
+        "rms_gls_nm": 0.37022096818544536,
+        "rms_ols_nm": 0.372321416072142,
+        "rms_gauss_newton_nm": 0.35030839854619367,
+        "max_abs_bias_gls_nm": 0.14142621592529614,
+        "crb_dn_riu": 0.001791460997761071,
+        "rms_gls_dn_riu": 0.0018511048409272268
+      },
+      {
+        "M": 16,
+        "crb_nm": 0.25768406348177914,
+        "crb_local_nm": 0.24269439248918945,
+        "rms_gls_predicted_nm": 0.26487349989876935,
+        "rms_gls_nm": 0.2665623868077693,
+        "rms_ols_nm": 0.2691868918376017,
+        "rms_gauss_newton_nm": 0.23301202133787383,
+        "max_abs_bias_gls_nm": 0.09160629180107221,
+        "crb_dn_riu": 0.0012884203174088956,
+        "rms_gls_dn_riu": 0.0013328119340388464
+      },
+      {
+        "M": 32,
+        "crb_nm": 0.18639527250262958,
+        "crb_local_nm": 0.15604633802473777,
+        "rms_gls_predicted_nm": 0.19127440716630198,
+        "rms_gls_nm": 0.19137943331873278,
+        "rms_ols_nm": 0.1956526723137144,
+        "rms_gauss_newton_nm": 0.17067937347210044,
+        "max_abs_bias_gls_nm": 0.06589909449435122,
+        "crb_dn_riu": 0.0009319763625131479,
+        "rms_gls_dn_riu": 0.0009568971665936638
+      },
+      {
+        "M": 64,
+        "crb_nm": 0.13692234998614136,
+        "crb_local_nm": 0.10902087729026144,
+        "rms_gls_predicted_nm": 0.13794480622817334,
+        "rms_gls_nm": 0.13934084374778882,
+        "rms_ols_nm": 0.14275770546738067,
+        "rms_gauss_newton_nm": 0.1228210075904383,
+        "max_abs_bias_gls_nm": 0.026516188538344032,
+        "crb_dn_riu": 0.0006846117499307068,
+        "rms_gls_dn_riu": 0.0006967042187389441
+      },
+      {
+        "M": 128,
+        "crb_nm": 0.10399306489143063,
+        "crb_local_nm": 0.08184369701315339,
+        "rms_gls_predicted_nm": 0.10442841197243997,
+        "rms_gls_nm": 0.10444523466052007,
+        "rms_ols_nm": 0.10850851253236804,
+        "rms_gauss_newton_nm": 0.08774115305863381,
+        "max_abs_bias_gls_nm": 0.014946425651076872,
+        "crb_dn_riu": 0.0005199653244571531,
+        "rms_gls_dn_riu": 0.0005222261733026003
+      },
+      {
+        "M": 256,
+        "crb_nm": 0.08412642266754781,
+        "crb_local_nm": 0.06453704640431654,
+        "rms_gls_predicted_nm": 0.08464281082103833,
+        "rms_gls_nm": 0.08495604226516476,
+        "rms_ols_nm": 0.0906199874221727,
+        "rms_gauss_newton_nm": 0.06758954757535819,
+        "max_abs_bias_gls_nm": 0.015525308571519486,
+        "crb_dn_riu": 0.0004206321133377391,
+        "rms_gls_dn_riu": 0.0004247802113258238
+      },
+      {
+        "M": 512,
+        "crb_nm": 0.07509117060520028,
+        "crb_local_nm": 0.05499234609393336,
+        "rms_gls_predicted_nm": 0.07535061964451066,
+        "rms_gls_nm": 0.07552580932411378,
+        "rms_ols_nm": 0.08167719841241945,
+        "rms_gauss_newton_nm": 0.05777739262838587,
+        "max_abs_bias_gls_nm": 0.010283423441187711,
+        "crb_dn_riu": 0.0003754558530260014,
+        "rms_gls_dn_riu": 0.0003776290466205689
+      },
+      {
+        "M": 1024,
+        "crb_nm": 0.07335509509803531,
+        "crb_local_nm": 0.05174716473137617,
+        "rms_gls_predicted_nm": 0.07363802272725431,
+        "rms_gls_nm": 0.073853895263179,
+        "rms_ols_nm": 0.08035125112118069,
+        "rms_gauss_newton_nm": 0.05475197335206367,
+        "max_abs_bias_gls_nm": 0.010947260202660042,
+        "crb_dn_riu": 0.00036677547549017654,
+        "rms_gls_dn_riu": 0.00036926947631589496
+      },
+      {
+        "M": 2048,
+        "crb_nm": 0.07331775287752712,
+        "crb_local_nm": 0.051507724769146515,
+        "rms_gls_predicted_nm": 0.07360108616478982,
+        "rms_gls_nm": 0.07380832143094321,
+        "rms_ols_nm": 0.08032155982326336,
+        "rms_gauss_newton_nm": 0.05453958392136613,
+        "max_abs_bias_gls_nm": 0.010970358915922351,
+        "crb_dn_riu": 0.0003665887643876356,
+        "rms_gls_dn_riu": 0.00036904160715471606
+      },
+      {
+        "M": 2304,
+        "crb_nm": 0.07331775225159506,
+        "crb_local_nm": 0.05150768382929525,
+        "rms_gls_predicted_nm": 0.07360108567250385,
+        "rms_gls_nm": 0.07380835725161002,
+        "rms_ols_nm": 0.08032158722723018,
+        "rms_gauss_newton_nm": 0.054540326657945164,
+        "max_abs_bias_gls_nm": 0.010970672275046361,
+        "crb_dn_riu": 0.0003665887612579753,
+        "rms_gls_dn_riu": 0.00036904178625805006
+      }
+    ]
+  },
+  "stage1_two_region": {
+    "pixels_A": 450,
+    "pixels_B": 450,
+    "crb_nm": 0.08828262337731252
+  },
+  "power_drift": {
+    "a": 1.01,
+    "true_shift_nm": 0.25,
+    "gls_estimate_nm": 1.1501656125108937,
+    "joint_estimate_nm": 0.24987457538983826,
+    "joint_a_hat": 1.010107853439565,
+    "gls_error_from_drift_nm": 0.8907798085998861,
+    "joint_error_from_drift_nm": 1.8907098109366416e-13,
+    "crb_shift_only_nm": 0.07331775225159506,
+    "crb_joint_nm": 0.07340501734866361
+  },
+  "config": {
+    "Sn_nm_per_riu": 200.0,
+    "delta_gammas": 0.02,
+    "gamma_nm": 2.5,
+    "test_shifts_gammas": [
+      -0.1,
+      -0.05,
+      0.03,
+      0.07,
+      0.1
+    ],
+    "gn_iterations": 10
+  },
+  "information": {
+    "crb_at_0_nm": [
+      0.07331666461437232,
+      0.07340392842572828
+    ],
+    "crb_at_1gamma_nm": [
+      0.0048824219296068685,
+      0.08443151694308092
+    ]
+  },
+  "linearity": {
+    "crb_all_nm": 0.07331775225159506,
+    "linear_range_nm_by_M": {
+      "1": [
+        -2.4375,
+        2.6875
+      ],
+      "16": [
+        -1.25,
+        1.3125
+      ],
+      "256": [
+        -0.6875,
+        0.75
+      ],
+      "2304": [
+        -0.625,
+        0.6875
+      ]
+    },
+    "gauss_newton_max_abs_err_nm": 3.3717473257866004e-13,
+    "bias_at_0p1_gamma_nm": 0.009385803910998025
+  },
+  "checks": [
+    {
+      "name": "W: power per wavelength",
+      "passed": true,
+      "detail": "max |sum_j W_ji - (1 - band-limit loss)| = 1.1e-16 (limit 1e-12)"
+    },
+    {
+      "name": "y = W s equals the Stage 1 broadband image",
+      "passed": true,
+      "detail": "max rel. difference 4.1e-16 (limit 1e-12)"
+    },
+    {
+      "name": "g: central difference converged in delta",
+      "passed": true,
+      "detail": "delta vs delta/2: 1.1e-05 (limit 1e-4)"
+    },
+    {
+      "name": "g: Eq. (7) vs Eq. (8)",
+      "passed": true,
+      "detail": "FD vs analytic 1.5e-05 (limit 1e-4), autograd vs analytic 1.0e-12 (limit 1e-10)"
+    },
+    {
+      "name": "Noise model: variance = y + sigma_read^2",
+      "passed": true,
+      "detail": "variance error 1.9e-02 (limit 5e-2), mean within 2.4 standard errors (limit 5)"
+    },
+    {
+      "name": "Gauss-Newton removes the linearization bias",
+      "passed": true,
+      "detail": "max error 3.4e-13 nm over +-2 gamma (limit 1e-9)"
+    },
+    {
+      "name": "Monte Carlo matches the exact linear-estimator error",
+      "passed": true,
+      "detail": "max |RMS_MC / RMS_predicted - 1| = 0.010 over all M (limit 0.02, 10000 samples per M)"
+    },
+    {
+      "name": "Monte Carlo RMS reaches the Cramer-Rao bound",
+      "passed": true,
+      "detail": "max |RMS/CRB - 1| = 0.034 over all M (limit 0.05); M = 2304: RMS 0.0738 nm, CRB 0.0733 nm"
+    },
+    {
+      "name": "Joint amplitude fit removes a 1 % power drift",
+      "passed": true,
+      "detail": "drift-induced shift error 0.891 nm (Eq. 10) -> 1.9e-13 nm (Eq. 13); CRB cost 0.0733 -> 0.0734 nm"
+    }
+  ]
+}

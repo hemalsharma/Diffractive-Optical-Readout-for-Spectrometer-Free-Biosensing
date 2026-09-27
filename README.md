@@ -1,5 +1,6 @@
 # Inverse-Designed Diffractive Optical Biosensing
 ## Stage 1: Forward Model Development and Validation
+## Embodiment 2: Pixel-wise Spectral Coding and Resonance-Shift Estimation
 
 **Author:** Hemal Sharma
 
@@ -44,6 +45,11 @@ the end-point weights, and passing `dlam_nm=cfg.dlam_nm(sensor)` reproduces
 
 The full description, results and validation are in **`Stage1_Report.pdf`**.
 
+**Embodiment 2** (see below) keeps this forward model but replaces the two-region
+readout with individual camera pixels: `y = W s`, a resonance-shift sensitivity
+`g`, a least-squares shift estimator with shot and read noise, pixel ranking by
+Fisher information and a Monte Carlo study. Its report is **`Embodiment2_Report.pdf`**.
+
 ## Contents
 
 ```
@@ -52,6 +58,7 @@ The full description, results and validation are in **`Stage1_Report.pdf`**.
 |-- requirements.txt
 |-- requirements-dev.txt       pytest (for the test suite)
 |-- Stage1_Report.pdf          Stage 1 report
+|-- Embodiment2_Report.pdf     Embodiment 2 report (python src/make_e2_report.py)
 |-- src/                       source code (run from the package folder, see below)
 |-- notebooks/
 |   `-- Stage1_Forward_Model_Demo.ipynb    step-by-step demonstration, outputs included
@@ -115,6 +122,28 @@ Expected ending:
 Stage 1 completion criterion met: all 7 checks passed. ...
 ```
 
+### Step 3b: Embodiment 2 estimator  (about 30 s)
+
+```
+python src/embodiment2.py
+```
+
+Builds the pixel spectral-weighting matrix W for the Stage 1 grating, computes
+the sensitivity g (central difference, cross-checked against the analytic and
+autograd derivatives), and runs the estimator and the Monte Carlo over the number
+of retained pixels M. Writes the `e2_*` figures and tables and
+`results/embodiment2.json`. Expected ending:
+
+```
+Embodiment 2: all 9 checks passed in ... s. Figures and tables saved to .../results
+```
+
+Parameters (camera pitch, region of interest, photon budget, read noise, frames,
+S_n, test shifts) are in `Embodiment2Config` in `src/config.py`. The modules are
+`src/spectral_coding.py` (sensor in terms of the shift, camera, W, y = W s) and
+`src/estimator.py` (g, noise, GLS/OLS, joint amplitude, Gauss-Newton, Fisher
+ranking). `python src/make_e2_report.py` rebuilds the report HTML from the results.
+
 ### Automated tests
 
 ```
@@ -153,6 +182,19 @@ The calculation is deterministic: re-running the scripts reproduces the files in
 | `final_detector_table.csv` | Table 2 | Detector signals for c = 0 ... 2 |
 | `validation.json`, `completion.json` | Table 3 | All validation numbers |
 
+Embodiment 2 (`python src/embodiment2.py`, report `Embodiment2_Report.pdf`):
+
+| File in `results/` | Section 6 item | Content |
+|---|---|---|
+| `e2_weighting.png` | 1 | Pixel spectral weighting functions W_j(lambda), resonance marked |
+| `e2_camera.png` | 2 | Camera vector y(d) for several known shifts |
+| `e2_sensitivity.png` | 3 | Sensitivity map g_j; Eq. (7) vs Eq. (8) |
+| `e2_estimate.png` | 4 | Estimated vs true shift, noiseless and noisy, linear range |
+| `e2_rms_vs_M.png`, `e2_rms_vs_M.csv` | 5 | RMS error vs retained pixels M with the Cramer-Rao bound |
+| `e2_delta_n.png`, `e2_delta_n.csv` | 6 | Recovered refractive-index change and sigma_dn |
+| `e2_information.png` | supporting | Information vs operating point, shift-only vs amplitude-robust |
+| `e2_pixel_ranking.csv`, `embodiment2.json` | | Best pixels by Fisher information; all numbers and checks |
+
 Supporting plots that are not in the report but are produced by the scripts:
 `fig_concept.png` (block diagram), `fig_propagation.png` (propagation with and without
 the grating), `fig_difference.png` (normalized difference image), and the validation
@@ -175,3 +217,21 @@ inverse design of Stage 2.
 With the conventional grating, a resonance shift of one linewidth changes the
 differential readout R by only 1.2e-3. This is the baseline that the
 inverse-designed DOE has to improve on in Stage 2.
+
+## Embodiment 2 results (fixed grating, no inverse design)
+
+With 10^9 photoelectrons per measurement (100 frames of 10^7 e-, 100 e- read
+noise per frame) and 20 um camera pixels:
+
+1. Cramer-Rao bound on the resonance shift: 0.073 nm with all 2304 ROI pixels
+   (Monte Carlo 0.074 nm), 0.26 nm with the best 16 pixels. With an assumed
+   S_n = 200 nm/RIU this is sigma_dn = 3.7e-4 RIU.
+2. The linear estimator is unbiased to within the noise for shifts from -0.62 to
+   +0.69 nm; Gauss-Newton re-linearization removes the bias beyond that.
+3. With this grating, pixel-wise estimation improves on the Stage 1 two-region
+   readout only by a factor 1.2 (0.088 -> 0.073 nm): the grating encodes the
+   shift as a centroid move. The gain has to come from the inverse-designed DOE.
+4. At zero shift the total transmitted power is stationary, so all information
+   is spectral coding; away from zero a total-power channel dominates, which a
+   source drift corrupts. The joint amplitude estimator (Eq. 13) removes a 1 %
+   drift (0.89 nm false shift -> 2e-13 nm) at almost no cost.
